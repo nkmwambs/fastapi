@@ -1,7 +1,6 @@
 from datetime import date, datetime
 from pydantic import BaseModel
 from pydantic.networks import EmailStr
-from sqlalchemy.sql.functions import user
 from typing import Optional
 
 class CreatePlan(BaseModel):
@@ -49,6 +48,30 @@ class TokenData(BaseModel):
     user_id: Optional[str] = None
 
 
+class CreateGoal(BaseModel):
+    goal_name: str 
+    theme_id: int 
+    plan_id: int 
+    goal_description: str 
+    goal_period: int
 
+class Plan(BaseModel):
+    plan_name: str
+    plan_start_date: date
+    plan_end_date: date
+    plan_status: int
+    user_id: int
+    plan_created_date:date
+    plan_last_modified_date: datetime
+    
+    class Config:
+        orm_mode = True
 
+class ReturnGoal(CreateGoal):
+    goal_id: int
+    goal_created_date: date
+    # plan: ReturnPlan
+
+    class Config:
+        orm_mode = True
 

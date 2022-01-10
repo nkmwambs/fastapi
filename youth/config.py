@@ -1,8 +1,6 @@
 
 from pydantic import BaseSettings
 
-from youth import database
-
 class Settings(BaseSettings):
     database_username: str
     database_password: str 

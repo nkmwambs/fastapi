@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String, Date, DateTime,ForeignKey
 from sqlalchemy.orm import relationship
+from sqlalchemy.sql.elements import Null
 from sqlalchemy.sql.expression import text
 from .database import Base
 
@@ -7,7 +8,7 @@ from .database import Base
 class Plans(Base):
     __tablename__ = "plans"
 
-    plan_id = Column(Integer, primary_key=True, nullable=False)
+    plan_id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
     plan_name = Column(String, nullable=False)
     plan_start_date = Column(Date, nullable=False)
     plan_end_date = Column(Date, nullable=False)
@@ -21,13 +22,14 @@ class Plans(Base):
 
     owner = relationship("User")
 
+
 class Goals(Base):
     __tablename__ = "goals"
 
-    goal_id  = Column(Integer, primary_key=True, nullable=False)
+    goal_id  = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
     goal_name = Column(String, nullable=False)
     theme_id  = Column(Integer, nullable=False)
-    plan_id  = Column(Integer, default="true", index=True)
+    plan_id  = Column(Integer, ForeignKey("plans.plan_id", ondelete="CASCADE"), nullable=False)
     goal_description  = Column(String, nullable=False)
     goal_period  = Column(Integer, nullable=False)
     goal_created_by  = Column(Integer, nullable=False)
@@ -36,13 +38,16 @@ class Goals(Base):
     goal_last_modified_by  = Column(Integer, nullable=False)
     goal_deleted_at  = Column(DateTime, nullable=True)
 
+    plan: relationship("Plans")
+
 
 class User(Base):
     __tablename__ = "users"
 
-    user_id = Column(Integer, primary_key=True, nullable=False)
+    user_id = Column(Integer, primary_key=True, nullable=False, autoincrement=True)
     user_email = Column(String, unique=True, nullable=False)
     user_password = Column(String, nullable=False)
+    user_phone_number = Column(String)
     user_created_by  = Column(Integer, nullable=False)
     user_created_date  = Column(Date, nullable=False)
     user_last_modified_date  = Column(DateTime(timezone=True), nullable=False, server_default=text('now()'))
