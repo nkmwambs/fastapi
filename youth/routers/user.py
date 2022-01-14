@@ -62,5 +62,19 @@ def user_login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = D
     return {"access_token": token, "token_type": "bearer"}
 
 
+@router.put("/{id}", status_code=status.HTTP_200_OK, response_model=schemas.ReturnUser)
+def update_user(id: int, user: schemas.UserCreate, db: Session = Depends(utils.get_db)):
+    user_query = db.query(models.User).filter(
+        models.User.user_id == id, models.User.user_deleted_at == None)
 
+    updated_user = user_query.first()
 
+    if not updated_user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"User of id {id} not found")
+
+    user.user_password = auth.hash_password(user.user_password)
+    user_query.update(user.dict())
+    db.commit()
+
+    return updated_user
