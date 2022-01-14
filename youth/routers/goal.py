@@ -48,10 +48,10 @@ def get_goals_by_Id(id: int, db: Session = Depends(get_db)):
 
 
 @router.put("/{id}")
-def update_goal():
+def update_goal(current_user: Optional[str] = Depends(get_current_user)):
     return {"data":"Hey"}
 
 
 @router.delete("/{id}")
-def delete_goal():
+def delete_goal(current_user: Optional[str] = Depends(get_current_user)):
     return {"data":"Hey"}
