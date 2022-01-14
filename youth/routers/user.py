@@ -63,7 +63,7 @@ def user_login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = D
 
 
 @router.put("/{id}", status_code=status.HTTP_200_OK, response_model=schemas.ReturnUser)
-def update_user(id: int, user: schemas.UserCreate, db: Session = Depends(utils.get_db)):
+def update_user(id: int, user: schemas.UpdateUser, db: Session = Depends(utils.get_db)):
     user_query = db.query(models.User).filter(
         models.User.user_id == id, models.User.user_deleted_at == None)
 
@@ -74,7 +74,12 @@ def update_user(id: int, user: schemas.UserCreate, db: Session = Depends(utils.g
                             detail=f"User of id {id} not found")
 
     user.user_password = auth.hash_password(user.user_password)
-    user_query.update(user.dict())
+
+    if user.user_email != None:
+        user_query.update(user.dict())
+    else:
+        user_query.update({'user_password':  user.user_password})
+    
     db.commit()
 
     return updated_user

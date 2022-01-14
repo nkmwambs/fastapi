@@ -12,6 +12,9 @@ class UserCreate(BaseModel):
     user_email:str
     user_password: str
 
+class UpdateUser(UserCreate):
+    user_email: Optional[str] = None
+
 class ReturnUser(BaseModel):
     user_id: int
     user_email:EmailStr
