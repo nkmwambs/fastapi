@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 from ..utils import get_db
 
 router = APIRouter(
-    prefix="/goals",
+    prefix="/api/goals",
     tags=["Goals"]
 )
 

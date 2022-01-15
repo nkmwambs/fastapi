@@ -11,7 +11,7 @@ from enum import Enum
 from youth import schemas
 
 router = APIRouter(
-    prefix="/plans",
+    prefix="/api/plans",
     tags=['Plans']
 )
 

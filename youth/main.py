@@ -23,6 +23,6 @@ app.include_router(goal.router)
 app.include_router(user.router)
 
 
-@app.get("/fastapi", tags=["Testing"])
+@app.get("/api", tags=["Testing"])
 def root():
     return {"message":"Hello world"}
