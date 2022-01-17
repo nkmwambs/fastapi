@@ -10,7 +10,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 router = APIRouter(
     tags=["Users"],
-    prefix="/api/users"
+    prefix="/users"
 )
 
 
